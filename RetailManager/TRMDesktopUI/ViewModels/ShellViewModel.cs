@@ -4,16 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TRMDesktopUI.EventModels;
+using TRMDesktopUI.Views;
 
 namespace TRMDesktopUI.ViewModels
 {
-    public class ShellViewModel : Conductor<object>
+    public class ShellViewModel : Conductor<object>, IHandle<LogOnEvent>
     {
-        LoginViewModel _loginVM;
-        public ShellViewModel(LoginViewModel loginVM) 
+        SalesViewModel _salesVM;
+        IEventAggregator _events;
+        SimpleContainer _simpleContainer;
+        public ShellViewModel( IEventAggregator events, SalesViewModel salesVM, SimpleContainer simpleContainer) 
         {
-            _loginVM = loginVM;
-            ActivateItem(loginVM);
+            _salesVM = salesVM;
+            _events = events;
+            _simpleContainer = simpleContainer;
+            _events.Subscribe(this);
+            ActivateItem(_simpleContainer.GetInstance<LoginViewModel>());
+        }
+
+        public void Handle(LogOnEvent message)
+        {
+            ActivateItem(_salesVM);
         }
     }
 }
