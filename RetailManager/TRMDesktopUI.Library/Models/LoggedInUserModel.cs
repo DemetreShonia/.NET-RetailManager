@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TRMDataManager.Library.Models
+namespace TRMDesktopUI.Library.Models
 {
-    public class UserModel
+    public class LoggedInUserModel : ILoggedInUserModel
     {
+        public string Token { get; set; }
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
