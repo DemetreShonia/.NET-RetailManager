@@ -12,8 +12,8 @@ namespace TRMDesktopUI.ViewModels
 {
     public class LoginViewModel : Screen
     {
-        private string _userName;
-        private string _password;
+        private string _userName = "d@sh.ge"; // for testing and development
+        private string _password = "Pwd1234."; // have default values, just for us
 
         IAPIHelper _apiHelper;
         IEventAggregator _events;
