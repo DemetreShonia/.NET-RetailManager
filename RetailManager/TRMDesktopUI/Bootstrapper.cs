@@ -28,7 +28,8 @@ namespace TRMDesktopUI
         }
         protected override void Configure()
         {
-            _container.Instance(_container); // we want to pass this to others? not only via constructor
+            _container.Instance(_container).
+                PerRequest<IProductEndpoint, ProductEndpoint>(); // we want to pass this to others? not only via constructor
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
