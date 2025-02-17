@@ -2,6 +2,7 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using TRMDataManager.Library.Internal.DataAccess;
@@ -79,11 +80,14 @@ namespace TRMDataManager.Library.DataAccess
                 }
 
             }
+        }
+        public List<SaleReportModel> GetSaleReport()
+        {
+            SqlDataAccess sql = new SqlDataAccess();
 
+            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSaleSaleReport", new { }, "TRMData");
 
-
-
-
+            return output;
         }
     }
 }
