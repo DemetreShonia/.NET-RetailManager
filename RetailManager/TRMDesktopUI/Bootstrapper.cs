@@ -47,6 +47,7 @@ namespace TRMDesktopUI
 
             _container.Instance(_container).
                 PerRequest<IProductEndpoint, ProductEndpoint>()
+                .PerRequest<IUserEndpoint, UserEndpoint>()
                 .PerRequest<ISaleEndpoint, SaleEndpoint>(); // we want to pass this to others? not only via constructor
 
             _container

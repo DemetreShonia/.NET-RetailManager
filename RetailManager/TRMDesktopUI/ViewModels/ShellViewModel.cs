@@ -42,6 +42,11 @@ namespace TRMDesktopUI.ViewModels
 
         }
 
+        public void UserManagement()
+        {
+            ActivateItem(IoC.Get<UserDisplayViewModel>());
+        }
+
         public void ExitApplication()
         {
             TryClose();
