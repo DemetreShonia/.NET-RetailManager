@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 
 namespace TRMDataManager.Library.Internal.DataAccess
 {
-    internal class SqlDataAccess
+    internal class SqlDataAccess : IDisposable
     {
+        
+
         public string GetConnectionString(string name)
         {
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
@@ -38,6 +40,41 @@ namespace TRMDataManager.Library.Internal.DataAccess
                 connection.Execute(storedProcedure, parameters,
                     commandType: CommandType.StoredProcedure);
             }
+        }
+        public void Dispose()
+        {
+            CommitTransaction();
+        }
+        IDbConnection _connection;
+        IDbTransaction _transaction;
+        public void StartTransaction(string connectionStringName)
+        {
+            string connectionString = GetConnectionString(connectionStringName);
+            _connection = new SqlConnection(connectionString);
+            _connection.Open();
+            _transaction = _connection.BeginTransaction();
+        }
+        public List<T> LoadDataInTransaction<T, U>(string storedProcedure, U parameters)
+        {
+                List<T> rows = _connection.Query<T>(storedProcedure, parameters,
+                    commandType: CommandType.StoredProcedure, transaction: _transaction).ToList();
+                return rows;
+        }
+
+        public void SaveDataInTransaction<T>(string storedProcedure, T parameters)
+        {
+            _connection.Execute(storedProcedure, parameters,
+                    commandType: CommandType.StoredProcedure, transaction: _transaction);
+        }
+        public void CommitTransaction()
+        {
+            _transaction?.Commit();
+            _connection?.Close();
+        }
+        public void RollbackTransaction()
+        {
+            _transaction?.Rollback();
+            _connection?.Close();
         }
     }
 }
