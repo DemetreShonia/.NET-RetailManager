@@ -11,5 +11,15 @@ namespace TRMDesktopUI.Library.Models
         public string Id { get; set; }
         public string Email { get; set; }
         public Dictionary<string, string> Roles { get; set; }
+
+        private string roleList;
+        public string RoleList
+        {
+            get
+            {
+                var list = string.Join(", ", Roles.Select(x => x.Value));
+                return list;
+            }
+        }
     }
 }
